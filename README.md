@@ -89,23 +89,49 @@ Follow the directions in the Jupyter notebook to perform this step
 #### Required files: 
 Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/1_call_cluster_peaks_ORIG.py`  
 Tag align file: `(example) pbmc1.tagalign.gz`  
-barcode cluster file (output by step 3): ` (example)  Islet.cluster_labels.txt`
-Reference chromosome sizes file: `/home/joshchiou/references/hg19.chrom.sizes`
+barcode cluster file (output by step 3): ` (example)  Islet.cluster_labels.txt`  
+Reference chromosome sizes file: `/home/joshchiou/references/hg19.chrom.sizes`  
 #### Other: 
-Label prefix: `(example) pbmc1`
+Label prefix: `(example) pbmc1`  
 #### Output:
-bdg file : `(example) pbmc1_treat_pileup.bdg`
-bdg file: `(example) pbmc1_.norm.bdg`
-bed file : `(example) pbmc1_summits.bed`
-xls file: `(example) _peaks.xls`
+bdg file : `(example) pbmc1_treat_pileup.bdg`  
+bdg file: `(example) pbmc1_.norm.bdg`  
+bed file : `(example) pbmc1_summits.bed`  
+xls file: `(example) _peaks.xls`  
+
+#### Directions: 
+command: `python 1_call_cluster_peaks_ORIG.py [tag align file name] [barcode cluster file] [sample prefix]`  
+example: `python 1_call_cluster_peaks_ORIG.py pbmc1.tagalign.gz pbmc1.cluster_labels.txt pbmc1`  
+
 ### B. Merge the bed files
-`/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/2_make_merged_bed_ORIG.sh`
+#### Required software
+`bedtools`
+#### Required files: 
+Bash script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/2_make_merged_bed.sh`  
+ENCODE blacklist file: `/home/jnewsome/references/ENCODE.hg19.blacklist.bed`
+#### Other:
+A list of the cell types that were used to label the clusters / barcodes in step 3
+narrow peak files from step 3: `(example) /home/jnewsome/pipeline_islet/peakCalls/narrowPeak/islet.Alpha_cell_peaks.narrowPeak`  
+#### Output: 
+bed file: `(example) islet.Alpha_cell_peaks.bed`  
+bed file: `islet.bed`  
+bed file: `islet.sorted.bed`
+bed file: `islet.sorted.filtered.bed`
+bed file: `islet.sorted.merged.bare.bed`  
+
 ### C. Create the Market matrix file
-`/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/3_create_matrix_ORIG.sh`
+#### Required software
+`bedtools`
+#### Required files: 
+Deduplicated tag align file: `(example) pbmc1.filt.rmdup.tagAlign.gz`  
+sorted merged bed file: `(example) pbmc1.sorted.merged.bed`
+Bash script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/3_create_matrix_ORIG.sh`  
+#### Output:
+market matrix file for the merged peaks: `(example) pbmc1.merged_peaks.long_fmt.mtx.gz`
 ### D. build csr int
 #### Required files: 
-Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/4_build_csr_int_ORIG.py`
-Merged Bed file: `Islet_123.combined.merged.bed`
+Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/4_build_csr_int_ORIG.py`  
+Merged Bed file: `(example) Islet_123.combined.merged.bed`  
 
 
 ## 5. Run Cicero
