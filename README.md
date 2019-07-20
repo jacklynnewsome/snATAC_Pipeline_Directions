@@ -75,8 +75,41 @@ A file with cells labelled with cell types, based on leiden cluster: ` (example)
 Follow the directions in the Jupyter notebook to perform this step
 
 
+
+
+
+
+
 ## 4. Call Peaks
+### A. Call Cluster Peaks
+#### Required software:   
+`bedGraphToBigWig`
+`macs2`
+
+#### Required files: 
+Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/1_call_cluster_peaks_ORIG.py`  
+Tag align file: `(example) pbmc1.tagalign.gz`  
+barcode cluster file (output by step 3): ` (example)  Islet.cluster_labels.txt`
+Reference chromosome sizes file: `/home/joshchiou/references/hg19.chrom.sizes`
+#### Other: 
+Label prefix: `(example) pbmc1`
+#### Output:
+bdg file : `(example) pbmc1_treat_pileup.bdg`
+bdg file: `(example) pbmc1_.norm.bdg`
+bed file : `(example) pbmc1_summits.bed`
+xls file: `(example) _peaks.xls`
+### B. Merge the bed files
+`/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/2_make_merged_bed_ORIG.sh`
+### C. Create the Market matrix file
+`/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/3_create_matrix_ORIG.sh`
+### D. build csr int
+#### Required files: 
+Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/4_build_csr_int_ORIG.py`
+Merged Bed file: `Islet_123.combined.merged.bed`
+
+
 ## 5. Run Cicero
+
 ## 6. Annotate Data, sort co-accessible pairs
 
 
