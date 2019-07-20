@@ -123,17 +123,32 @@ bed file: `islet.sorted.merged.bare.bed`
 #### Required software
 `bedtools`
 #### Required files: 
-Deduplicated tag align file: `(example) pbmc1.filt.rmdup.tagAlign.gz`  
-sorted merged bed file: `(example) pbmc1.sorted.merged.bed`
-Bash script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/3_create_matrix_ORIG.sh`  
+Deduplicated tag align file: `(example) pbmc1.filt.rmdup.tagAlign.gz`    
+sorted merged bed file: `(example) pbmc1.sorted.merged.bed`   
+Bash script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/3_create_matrix_ORIG.sh`   
 #### Output:
-market matrix file for the merged peaks: `(example) pbmc1.merged_peaks.long_fmt.mtx.gz`
+market matrix file for the merged peaks: `(example) pbmc1.merged_peaks.long_fmt.mtx.gz`  
 ### D. build csr int
+#### Required software
+`bedtools`
+##### Python Packages:
+`pandas`  
+`scipy`  
 #### Required files: 
 Python script: `/home/jacklyn/PycharmProjects/r4/peakCallScripts_orig/4_build_csr_int_ORIG.py`  
 Merged Bed file: `(example) Islet_123.combined.merged.bed`  
-
-
+Deduplicated tag align file: `(example) pbmc1.filt.rmdup.tagAlign.gz`   
+barcode cluster file (output by step 3): ` (example)  Islet.cluster_labels.txt`   
+#### Other:
+a prefix for the output files  
+#### Output:
+market matrix file for the merged peaks: `(example) pbmc1.merged_peaks.long_fmt.mtx.gz`   
+barcodes file:	` (example) wtvr.barcodes`  
+regions file:	` (example) wtvr.peaks`    
+mtx file: ` (example) wtvr.mtx  `  
+csr.npz file: `(example) wtvr.csr.npz`  
+#### Directions:
+WIP
 ## 5. Run Cicero
 
 ## 6. Annotate Data, sort co-accessible pairs
