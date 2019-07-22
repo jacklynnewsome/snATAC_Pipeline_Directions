@@ -189,10 +189,13 @@ cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  >
 #### Required files:  
 Cicero output annotation script (JN): `/home/jacklyn/PycharmProjects/r4/annotateAndSortCiceroOutput.py`  
 Cicero output deduplicated txt file for each cell type: `(example) pbmc1.CELL_TYPE.cicero_conns_dedup.txt`  
+bed file from step 6.A: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`  
+#### Other: 
+a threshold for Cicero coaccessibility score, as a decimal. eg, 5% = 0.05
 #### Output:
-Annotated cicero output files:
-```(example):
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed  
+General output: `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed`  
+Sorted annotated cicero output files:
+```  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_CoA.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_NA.bed  
@@ -206,7 +209,11 @@ Annotated cicero output files:
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_CoA.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_NA.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Neg.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Zero.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.STATS.txt  
-```
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Zero.bed   
+```   
+Statistics file : 
+`/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.STATS.txt `  
+#### Directions:  
+cmd: `python annotateAndSortCiceroOutput.py -i [INPUT ANNOTATED CICERO FILE] -p [ANNOTATED PEAK REFERENCE BED FILE] -o [NAME OF GENERAL OUTPUT BED FILE]`  
+Run this command for each cell type Cicero output deduplicated txt file
 
