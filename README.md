@@ -214,6 +214,6 @@ Sorted annotated cicero output files:
 Statistics file : 
 `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.STATS.txt `  
 #### Directions:  
-cmd: `python annotateAndSortCiceroOutput.py -i [INPUT ANNOTATED CICERO FILE] -p [ANNOTATED PEAK REFERENCE BED FILE] -o [NAME OF GENERAL OUTPUT BED FILE]`  
+cmd: `python annotateAndSortCiceroOutput.py -i [INPUT ANNOTATED CICERO FILE] -p [ANNOTATED PEAK REFERENCE BED FILE] -o [NAME OF GENERAL OUTPUT BED FILE] -t [SCORE THRESHOLD, eg '0.05']`  
 Run this command for each cell type Cicero output deduplicated txt file
 
