@@ -171,22 +171,42 @@ rds file for each cell type: `(example) pbmc1.CELL_TYPE.1MB_cicero_conns.rds`
 txt file for each cell type:  `(example) pbmc1.CELL_TYPE.cicero_conns.txt`  
 deduplicated txt file for each cell type: `(example) pbmc1.CELL_TYPE.cicero_conns_dedup.txt`  
 ### Directions:
- replace relevant information in the notebook or script
+ replace relevant information in the notebook or script   
 ## 6. Annotate Data, sort co-accessible pairs
 ### A. Intersect Reference promoter file with All of the peaks present in the data set
 #### Required files:
 Referance 1KB promoter reference file: `gencode.v19.1kb_all_possible_transcripts.bed`  
-the merged peaks cell-type-annotated sorted bed file: `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/lung.merged_peaks.anno.sorted.bed`  
+the merged peaks cell-type-annotated sorted bed file: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/lung.merged_peaks.anno.sorted.bed`  
 #### Required Software:
 `bedtools`  
 #### Output Files:  
-A bedfile with the intersected data set peaks, reference promoter names, and reference promoter peaks: `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.refLocIncluded.bed`  
-A bedfile with the reference promoter names and data set peaks: `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`  
+A bedfile with the intersected data set peaks, reference promoter names, and reference promoter peaks: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.refLocIncluded.bed`  
+A bedfile with the reference promoter names and data set peaks: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`  
 #### Directions:  
-cmd: `bedtools intersect -a [MERGED BED FILE] -b [REFERENCE FILE] -wa -wb > /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.refLocIncluded.bed`  
-cmd: `awk '{print $1,$2,$3,$4,$8}' /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.refLocIncluded.bed > /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`
-### Required files:  
-
-### Required software
-`bedtools`  
+cmd: `bedtools intersect -a [MERGED BED FILE] -b [REFERENCE FILE] -wa -wb > [REFERENCE / DATASET INTERSECTED BED FILE]`  
+cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  > [ANNOTATED DATASET PEAK BED FILE]`  
+### B. Annotated Cicero Output File
+#### Required files:  
+Cicero output annotation script (JN): `/home/jacklyn/PycharmProjects/r4/annotateAndSortCiceroOutput.py`  
+Cicero output deduplicated txt file for each cell type: `(example) pbmc1.CELL_TYPE.cicero_conns_dedup.txt`  
+#### Output:
+Annotated cicero output files:
+```(example):
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_CoA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_NA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_Neg.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_Zero.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_CoA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_NA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_Neg.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_Zero.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.idententicalPromoter_PP.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_CoA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_NA.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Neg.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Zero.bed  
+/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.STATS.txt  
+```
 
