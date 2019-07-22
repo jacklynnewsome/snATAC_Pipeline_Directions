@@ -172,6 +172,7 @@ txt file for each cell type:  `(example) pbmc1.CELL_TYPE.cicero_conns.txt`
 deduplicated txt file for each cell type: `(example) pbmc1.CELL_TYPE.cicero_conns_dedup.txt`  
 ### Directions:
  replace relevant information in the notebook or script   
+ Alternative command, implement later: `Rscript cicero_islet1_remote.R  /home/jnewsome/pipeline_islet/ciceroOutput islet.sorted.merged.fixed.bed Islet.cluster_labels.txt islet.merged_peaks.long_fmt.mtx islet`   
 ## 6. Annotate Data, sort co-accessible pairs
 ### A. Intersect Reference promoter file with All of the peaks present in the data set
 #### Required files:
@@ -215,5 +216,16 @@ Statistics file :
 `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.STATS.txt `  
 #### Directions:  
 cmd: `python annotateAndSortCiceroOutput.py -i [INPUT ANNOTATED CICERO FILE] -p [ANNOTATED PEAK REFERENCE BED FILE] -o [NAME OF GENERAL OUTPUT BED FILE] -t [SCORE THRESHOLD, eg '0.05']`  
-Run this command for each cell type Cicero output deduplicated txt file
-
+Run this command for each cell type Cicero output deduplicated txt file  
+#### Annotation Definitions:    
+CC = CRE/CRE relationship (neither peak in cicero pair falls within a promoter region, as defined by the 1 kb reference promoter file)   
+CP = CRE/Promoter relationship (1 peak in cicero pair falls within a promoter region)  
+PP = Promoter/Promoter relationship (both peaks in cicero pair fall within promoter region(s))  
+Scores:  
+Zero = Cicero Coacessibility score for this pair of peaks is less than the selected threshold, but more than the negative threshold  
+Neg = Cicero Coacessibility score for this pair of peaks is less or equal to the negative threshold  
+CoA = Cicero Coacessibility score for this pair of peaks is greater than or equal to the selected threshold  
+NA = The Cicero Coaccessibility score for this pair was marked as 'NA'  
+## 7. Annotate with pathways
+## 8. Annoted with noted sites of interest
+## 9. Make swoopy figures for sites of interest, for different cell populations
