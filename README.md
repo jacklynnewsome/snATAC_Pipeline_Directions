@@ -226,6 +226,44 @@ Zero = Cicero Coacessibility score for this pair of peaks is less than the selec
 Neg = Cicero Coacessibility score for this pair of peaks is less or equal to the negative threshold  
 CoA = Cicero Coacessibility score for this pair of peaks is greater than or equal to the selected threshold  
 NA = The Cicero Coaccessibility score for this pair was marked as 'NA'  
-## 7. Annotate with pathways
-## 8. Annoted with noted sites of interest
-## 9. Make swoopy figures for sites of interest, for different cell populations
+## 7. Merge Bed files, a step that should be done before this but it's not, because that would mean I'd have to change the annotation script
+#### Required files:
+All of the "AllPairAnnotations.bed" files from the step before this one   
+annotated merging cicero script : `/home/jacklyn/PycharmProjects/r4/mergeCiceroBedFilesAfterAnnotation.py` 
+#### Other:
+file prefix for the input files you need : `(example) islet.`   
+file suffix for the input files you need : `(example) .cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed`  
+the path to the directory with these files
+#### Output Files:  
+a merged "AllPairAnnotations.bed" file for the entire data set `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.ALL_CELL_TYPES.cicero_conns_dedup.promPairCell_annotated.bed`
+
+#### Directions:  
+cmd: python mergeCiceroBedFilesAfterAnnotation.py -i 
+
+example: `python [MERGE SCRIPT] -i [INPUT DIRECTORY with the last forward slash] -o /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.ALL_CELL_TYPES.cicero_conns_dedup.promPairCell_annotated.bed -p islet. -s .cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed`
+
+## 8. Annotate with pathways
+## 9. Annoted with noted sites of interest (Islet Only?)
+### A. Intersect Differential Site Bed file with Data set Peak Bed file:
+
+#### Required files:
+Differentially expressed sites of interest : https://github.com/anthony-aylward/islet-cytokines-outline/blob/master/differential-sites.bed
+the merged peaks cell-type-annotated sorted bed file: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/peakCalls/islet.sorted.merged.bed`  
+#### Required Software:
+`bedtools`  
+#### Output Files:  
+A bedfile with the intersected data set peaks, reference promoter names, and reference promoter peaks: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.refLocIncluded.bed`  
+A bedfile with the reference promoter names and data set peaks: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`  
+#### Directions:  
+cmd: `bedtools intersect -a [MERGED BED FILE] -b [REFERENCE FILE] -wa -wb > [REFERENCE / DATASET INTERSECTED BED FILE]`  
+cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  > [ANNOTATED DATASET PEAK BED FILE]`  
+
+
+
+
+
+
+
+
+	
+## 10. Make swoopy figures for sites of interest, for different cell populations
