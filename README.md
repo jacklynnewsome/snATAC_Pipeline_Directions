@@ -4,27 +4,48 @@
 	Anaconda, probably
 ## 1. Run Cell Ranger on the raw FASTQ snATAC files
 (https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger)  
-
+### Required files: 
+Directory with Input FASTQ Files
+Cell Ranger Application: `/home/ysun/cellranger-atac-1.1.0/cellranger-atac count`
+Reference Genome file: `/home/ysun/refdata-cellranger-atac-hg19-1.1.0`
+### Other requirements: 
+sample name (must match beginning of all FASTQ file names before the S1_ thing), example: `JYH_PBMC1`
+id name to use, example: `PBMC1`
+number of cores to use
 ### Commands: 
-	``` I don't actually know what this pipeline entails. I have never run this ```
+`[cell ranger application] --id=[id name] --fastq=[FASTQ directory] --sample=[sample name] --reference=[reference genome file] --localcores=[number of cores to use]`
+example: `/home/ysun/cellranger-atac-1.1.0/cellranger-atac count --id=PBMC1 --fastq=/nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/dataBackup/PBMC1 --sample=JYH_PBMC1 --reference=/home/ysun/refdata-cellranger-atac-hg19-1.1.0 --localcores=12`
+
 ### Outputs:
-Bam file
-others? 
+```
+- Per-barcode fragment counts & metrics:        /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/singlecell.csv
+- Position sorted BAM file:                     /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/possorted_bam.bam
+- Position sorted BAM index:                    /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/possorted_bam.bam.bai
+- Summary of all data metrics:                  /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/summary.json
+- HTML file summarizing data & analysis:        /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/web_summary.html
+- Bed file of all called peak locations:        /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/peaks.bed
+- Raw peak barcode matrix in hdf5 format:       /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/raw_peak_bc_matrix.h5
+- Raw peak barcode matrix in mex format:        /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/raw_peak_bc_matrix
+- Directory of analysis files:                  /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/analysis
+- Filtered peak barcode matrix in hdf5 format:  /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/filtered_peak_bc_matrix.h5
+- Filtered peak barcode matrix in mex format:   /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/filtered_peak_bc_matrix
+- Barcoded and aligned fragment file:           /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/fragments.tsv.gz
+- Fragment file index:                          /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/fragments.tsv.gz.tbi
+- Filtered tf barcode matrix in hdf5 format:    /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/filtered_tf_bc_matrix.h5
+- Filtered tf barcode matrix in mex format:     /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/filtered_tf_bc_matrix
+- Loupe Cell Browser input file:                /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/cloupe.cloupe
+- csv summarizing important metrics and values: /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/summary.csv
+- Annotation of peaks with genes:               /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/peak_annotation.tsv
+
+```
 
 
 ## 2. Run the 10xGenomics processing script that Josh wrote
-
-### Commands:
-```python snATAC_pipeline_10X.py -b [cell ranger output bam file] -o [output directory ? ] -n [project name prefix] -t 24 -m 2 ```  
-
-
-### Example:
-``` /home/data/anaconda3/bin/python /nfs/lab/projects/pbmc_snATAC/scripts/snATAC_pipeline_10X.py -b cellranger_v1.1/possorted_bam.bam -o lab_pipeline -n pbmc1 -t 24 -m 2 ```  
-
 ### Required files: 
-Cell ranger output bam file: `cellranger_v1.1/outs/possorted_bam.bam `     
-Josh's 10x pipeline script ('snATAC_pipeline_10X.py'): `/nfs/lab/projects/pbmc_snATAC/scripts/snATAC_pipeline_10X.py`   
 
+Josh's 10x pipeline script: `/nfs/lab/projects/pbmc_snATAC/scripts/snATAC_pipeline_10X.py`
+Cell ranger output Position sorted BAM file: `(example) /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/possorted_bam.bam`
+BAI file for the Cell ranger output Position sorted BAM file: `(example) /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC3/outs/possorted_bam.bam.bai`
 ### Required software:   
 ##### Python Packages:
 	pysam
@@ -32,6 +53,26 @@ Josh's 10x pipeline script ('snATAC_pipeline_10X.py'): `/nfs/lab/projects/pbmc_s
 	pandas
 	scipy
 	multiprocessing
+### Other requirements: 
+sample name to output with
+output folder name
+### Commands: 
+`python [10x pipeline script] -b [bam file] -o [output folder name] -n [sample namer] -t 24 -m 2`
+example: `/home/data/anaconda3/bin/python /nfs/lab/projects/pbmc_snATAC/scripts/snATAC_pipeline_10X.py -b /nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/completeSamples/cellRanger/PBMC6/outs/possorted_bam.bam -o lab_pipeline -n pbmc6_completeSample -t 24 -m 2`
+### Outputs:
+```
+pbmc11_completeSample.barcodes
+pbmc11_completeSample.filt.md.bam
+pbmc11_completeSample.filt.rmdup.bam
+pbmc11_completeSample.long_fmt_mtx.txt.gz
+pbmc11_completeSample_peaks.narrowPeak
+pbmc11_completeSample.regions
+pbmc11_completeSample.compiled.filt.bam
+pbmc11_completeSample.filt.md.bam.bai
+pbmc11_completeSample.filt.rmdup.tagAlign.gz
+pbmc11_completeSample.mtx.gz
+pbmc11_completeSample.qc_metrics.txt
+```
 
 
 ## 3. Filter low quality and doublet cells out and cluster cells by type
@@ -242,10 +283,41 @@ cmd: python mergeCiceroBedFilesAfterAnnotation.py -i
 
 example: `python [MERGE SCRIPT] -i [INPUT DIRECTORY with the last forward slash] -o /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.ALL_CELL_TYPES.cicero_conns_dedup.promPairCell_annotated.bed -p islet. -s .cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed`
 
-## 8. Annotate with pathways
-## 9. Annoted with noted sites of interest (Islet Only?)
-### A. Intersect Differential Site Bed file with Data set Peak Bed file:
+## 8. Get Unique Gene List
+#### Required Files:
+The merged promoter annotated bed file for the data set: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.cicero_conns_dedup.promPairCellAnno_ALL.bed`  
+#### Output Files:
+A list of genes from the 1st peak in the Cicero pairs: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.genesColA.txt`  
+A list of genes from the 2nd peak in the Cicero pairs: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.genesColB.txt`  
+A list of all genes in data set, with duplicates: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.genesColBoth.txt`  
+A list of all genes in data set, without duplicates: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.genesColBoth_unique.txt`  
+#### Directions:
+cmd: `awk '{a[$4]++;} END{for(i in a) print a[i]"  "i}' [ANNOTATED_MERGED_BED_FILE] > [GENES_A_TXT]`  
+`awk '{a[$5]++;} END{for(i in a) print a[i]"  "i}' [ANNOTATED_MERGED_BED_FILE] > [GENES_B_TXT]`
+`cat [GENES_A_TXT] [GENES_B_TXT] > [GENES_BOTH_TXT]`
+`awk '{a[$2]++;} END{for(i in a) print a[i]"  "i}' [GENES_BOTH_TXT] > [GENES_BOTH_UNIQUE_TXT]`
+`awk '{print $2}' [GENES_BOTH_UNIQUE_TXT]  > [GENES_BOTH_UNIQUE_TXT]`  
 
+## 9. (Optional) Trim Gene List to Relevant Entries
+
+## 9. Annotate with pathways
+#### Required Files:
+A list of all promoter genes in data set: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/snATAC_lung.genesColBoth_unique.txt`   
+Script for generating gene-pathway file from REACTOME analysis:
+`/home/jacklyn/PycharmProjects/r4/createReferenceFromReactomeAnalysis.py`  
+Script for annotating annotated Cicero bed file with pathways: `/home/jacklyn/PycharmProjects/r4/annotateWithPathways.py`  OR `/home/jacklyn/PycharmProjects/r4/annotateCiceroPromotersWithInformation.py`  
+#### Other: 
+access to the REACTOME web tool: `https://reactome.org/PathwayBrowser/#TOOL=AT`  
+#### Output: 
+REACTOME analysis output file: `(example) snATAC_lung.reactome_analysis_result.csv`
+Cicero bed file, annotated with the pathways, and whatever else you've already done. it's like 9 PM. I'm tired : `(example) snATAC_lung.cicero_conns_dedup.promPairCellAnno_ALL.bed`
+#### Directions:
+Copy and paste the gene list into the REACTOME analysis tool. Click continue, Select "Project to human", and click "Analyze!" In the table at the bottom of the screen, click on the tab that says "Downloads" in the table (below "Results" and "Not Found"). Download the "Pathway analysis results" and whatever else ( I haven't used anything else yet).
+cmd: `python [REACTOME TO GENE PATHWAYS SCRIPT] -i [REACTOME ANALYSIS FILE] -o [GENE-PATHWAY LIST]`
+`python [PATHWAY ANNOTATION SCRIPT] -i [CICERO BED FILE] -o [CICERO BED FILE, NOW WITH PATHWAYS]`
+
+## 10. Annotated with noted sites of interest (Islet Only?)
+### A. Intersect Differential Site Bed file with Data set Peak Bed file:
 #### Required files:
 Differentially expressed sites of interest : https://github.com/anthony-aylward/islet-cytokines-outline/blob/master/differential-sites.bed
 the merged peaks cell-type-annotated sorted bed file: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/peakCalls/islet.sorted.merged.bed`  
@@ -256,7 +328,45 @@ A bedfile with the intersected data set peaks, reference promoter names, and ref
 A bedfile with the reference promoter names and data set peaks: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/r4_snATAC_islet/peakCalls/islet.sorted.merged.promoterAnnotated.bed`  
 #### Directions:  
 cmd: `bedtools intersect -a [MERGED BED FILE] -b [REFERENCE FILE] -wa -wb > [REFERENCE / DATASET INTERSECTED BED FILE]`  
-cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  > [ANNOTATED DATASET PEAK BED FILE]`  
+cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  > [ANNOTATED DATASET PEAK BED FILE]`    
+
+## 12. Annotate with gene families?
+#### Required Files:
+Merged, annotated cicero bed file
+Unique gene list
+annotation script
+#### output: 
+a gene-family list text file
+a gene- definition list text file
+yet another version of the annotated cicero file
+#### Other: 
+Access to Panther Db: `http://pantherdb.org/`
+#### Directions:
+upload the gene list to Panther Db. download the table. 
+cmd: `awk '{print $2,$5}' [PANTHER DB LIST]  > [GENE-FAMILY LIST]  awk '{print $2,$3}' [PANTHER DB LIST]  > [GENE-DEFINITION LIST]`
+`python [ANNOTATION SCRIPT] -i [ANNOTATED CICERO BED FILE] -p [GENE-FAMILY LIST] -c GeneFamily -o [OUTPUT ANNOTATED FILE]`  
+`python [ANNOTATION SCRIPT] -i [ANNOTATED CICERO BED FILE] -p [GENE-DEFINITION LIST] -c GeneDefinition -o [OUTPUT ANNOTATED FILE]`  
+## 13. Get disease relevant co-accessible sites
+#### Required files:
+annotated Cicero File
+annotation script
+Gene-Disease association table from `http://www.disgenet.org/static/disgenet_ap1/files/downloads/curated_gene_disease_associations.tsv.gz`
+OR 
+`http://www.disgenet.org/static/disgenet_ap1/files/downloads/befree_gene_disease_associations.tsv.gz`
+OR 
+`http://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_associations.tsv.gz`
+OR 
+`http://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_pmid_associations.tsv.gz`
+#### output: 
+gene-disease association list
+annotated Cicero file
+#### Directions: 
+pare down the gene-disease list to the diseases of interest
+cmd: `awk '{print $2,$6}' [DISGENET TABLE]  > [GENE-DISEASE LIST]`
+`python [ANNOTATION SCRIPT] -i [ANNOTATED CICERO BED FILE] -p [GENE-DISEASE] -c DiseaseAssociate -o [OUTPUT ANNOTATED FILE]`  
+
+
+## . Make swoopy figures for sites of interest, for different cell populations
 
 
 
@@ -264,6 +374,34 @@ cmd: `awk '{print $1,$2,$3,$4,$8}' [REFERENCE / DATASET INTERSECTED BED FILE]  >
 
 
 
+## Not organized yet 
+lab general python binary: `/home/data/anaconda3/bin/python`
+script to try and do the stupid peak calls and get the stupid, stupid bigwig files. i really hate that I've failed to generate these like 5 times. why does this take so long. why the heck can't the authors of macs2 update their gd software to make it work on python 3 so I can run it on my own computer. it would by done in 10 minutes:
+`/home/data/anaconda3/bin/python /home/joshchiou/scripts/call_cluster_peaks.py -t /home/jnewsome/pipeline_islet/SAMN1120500120-hi-cyto.filt.rmdup.tagAlign.gz -c /home/jnewsome/pipeline_islet/peakCalls/Islet.cluster_labels.txt -o SAMN1120500120-hi-cyto`  
 
-	
-## 10. Make swoopy figures for sites of interest, for different cell populations
+`/home/data/anaconda3/bin/jupyter notebook`
+
+human ref genome fasta:
+`/home/joshchiou/references/male.hg19.fa`
+hiv ref genome fasta
+`/nfs/lab/joshchiou/HIV_pbmc_snATAC/HIV1_refseq/HIV-1.fa`
+
+
+
+`/home/joshchiou/references/gencode.v19.cicero_gene_annotation.txt`
+
+current snATAC lung data:
+`/home/joshchiou/joshchiou-data2/lung_snATAC/merged_samples/cicero/`
+
+
+
+remote jupyter server startup command: `jupyter notebook --no-browser --port 1113  --notebook-dir /`
+
+remote jupyter server connection command from local machine: `ssh -p 2022 -NL 1114:localhost:1114 jnewsome@gatsby.ucsd.edu`
+
+local jupyter server setup command: `jupyter notebook --notebook-dir /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1
+`
+
+> Written with [StackEdit](https://stackedit.io/).
+
+
