@@ -200,9 +200,9 @@ WIP
 `data.table`
 ### Required Files 
 Either :   
-    Paula's cicero execution script: `cicero_islet1_remote.R`  
+    Paola's cicero execution script: `cicero_islet1_remote.R`  
 Or :   
-    Paula's cicero execution jupyter notebook:  `/notebooks/pbmcNotebooksOrigCopy/Cicero_pbmc1_test.ipynb`
+    Paola's cicero execution jupyter notebook:  `/notebooks/pbmcNotebooksOrigCopy/Cicero_pbmc1_test.ipynb`
     
 The annotated merged bed file: `(example) /home/jnewsome/pipeline_islet/peakCalls/islet.sorted.merged.bed`  
 The cluster Labels file: `/home/jnewsome/pipeline_islet/Islet.cluster_labels.txt` 
@@ -215,9 +215,22 @@ deduplicated txt file for each cell type: `(example) pbmc1.CELL_TYPE.cicero_conn
  replace relevant information in the notebook or script   
  Alternative command, implement later: `Rscript cicero_islet1_remote.R  /home/jnewsome/pipeline_islet/ciceroOutput islet.sorted.merged.fixed.bed Islet.cluster_labels.txt islet.merged_peaks.long_fmt.mtx islet`   
 ## 6. Annotate Data, sort co-accessible pairs
+### A.v2. Make reference file for all peaks in dataset
+#### 1. concatenate all of the by-chromosome cicero files together for each cell type
+#### 2. use python script to make a file to intersect with the 1KB promoter reference file and a reference file with all of the pair ids for that file
+##### Inputs:
+merged cicero file, example: `/nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/cicero/macro/merged/pbmc1to12.Macro.ALL_CELL_TYPES_MERGED.cicero_conns_dedup.txt`
+##### Outputs:
+ID reference file: `[specified output prefix]_IDReference.bed`
+ID individual peaks with id: `[specified output prefix]_IndividualPeaks_withID.bed`
+
+##### Script:
+peakRefMakerScript = `/nfs/lab/projects/pbmc_snATAC/pipeline/snATAC/cicero/macro/createCiceroPairReferenceFileForBedtoolsIntersect.py`
+##### Command:
+`${pyBin} ${peakRefMakerScript} -i ${catAllCiceroFile} -o ${peakRefFileAlmost} -p ${refPrefix}`
 ### A. Intersect Reference promoter file with All of the peaks present in the data set
 #### Required files:
-Referance 1KB promoter reference file: `gencode.v19.1kb_all_possible_transcripts.bed`  
+Reference 1KB promoter reference file: `gencode.v19.1kb_all_possible_transcripts.bed`  
 the merged peaks cell-type-annotated sorted bed file: `(example) /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_lung/lung.merged_peaks.anno.sorted.bed`  
 #### Required Software:
 `bedtools`  
@@ -239,16 +252,6 @@ General output: `/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAn
 Sorted annotated cicero output files:
 ```  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.AllPairAnnotations.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_CoA.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_NA.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_Neg.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CC_Zero.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_CoA.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_NA.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_Neg.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.CP_Zero.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.idententicalPromoter_PP.bed  
-/mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_CoA.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_NA.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Neg.bed  
 /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1/snATAC_islet/ciceroAnnotated/islet.Alpha_cell.cicero_conns_dedup.promAnno.bed.PP_Zero.bed   
@@ -401,6 +404,32 @@ remote jupyter server connection command from local machine: `ssh -p 2022 -NL 11
 
 local jupyter server setup command: `jupyter notebook --notebook-dir /mnt/4d60fd49-d4ad-42d2-ac64-5b3f0265b9c1
 `
+
+__lists for bash:__
+__macro populations__
+`macroList=(CD4_T-cell Monocyte CD8_T-cell NK_cell B-cell Megakaryocyte pDC)`
+__micro populations__
+`microList=(Adaptive_NK_cell Activated_CD4_T-cell Activated_CD8_T-cell Conventional_Dendritic_cell Memory_B-cell \
+Non-Classical_Monocyte Regulatory_CD4_T-cell Classical_Monocyte Naive_B-cell pDC Cytotoxic_NK_cell Naive_CD4_T-cell \
+Megakaryocyte Naive_CD8_T-cell)`
+__subclusters__
+`subclusterList=(5,6 8,8 2,6 1,11 2,7 11,3 8,5 5,4 0,3 6,2 1,10 0,2 5,9 4,11 4,6 16,5 10,4 0,6 6,6 1,8 2,4 8,0 6,5 3,1 \
+6,0 10,6 6,8 6,10 9,3 1,6 3,2 6,11 1,7 4,3 2,0 10,7 0,1 0,7 1,1 4,10 10,1 1,4 6,12 2,5 11,6 2,1 2,2 5,3 4,9 13,0 9,5 5,7 \
+14,21 1,13 1,0 0,0 8,1 3,8 2,8 3,9 5,2 2,16 9,15 12,0 0,4 2,13 14,1 1,9 0,11 8,6 5,8 6,7 2,14 13,1 13,10 0,9 9,0 6,3 7,3 \
+11,9 13,3 4,13 1,12 4,8 5,12 8,4 11,2 1,2 0,14 6,4 7,0 0,8 6,1 14,16 5,1 16,0 12,1 3,7 11,4 3,0 4,5 3,5 7,7 9,13 3,6 \
+14,15 2,3 5,10 0,12 6,14 14,0 16,2 7,2 8,7 1,5 3,13 12,4 16,24 3,4 0,10 1,3 16,13 0,5 5,5 8,9 7,11 12,2 15,8 2,11 9,1 \
+0,13 4,2 4,14 3,3 4,0 6,16 2,9 8,2 7,8 12,9 14,5 2,10 4,7 16,6 8,3 11,8 3,10 3,12 6,9 10,14 13,2 8,10 8,11 11,0 9,12 \
+5,11 14,9 9,7 6,13 9,2 9,8 9,11 7,6 1,14 14,17 2,15 10,5 10,9 6,18 11,7 2,12 14,11 12,10 14,6 9,6 3,11 0,15 1,16 4,4 \
+12,5 5,0 7,21 12,13 7,1 14,3 7,15 6,15 4,12 4,15 16,3 14,2 11,15 16,8 16,19 6,19 13,5 10,10 15,12 10,16 15,11 10,11 \
+9,10 12,8 11,1 15,4 16,7 11,5 12,3 7,4 11,12 14,19 9,4 9,9 12,12 14,13 6,17 15,2 5,14 16,4 4,1 12,11 13,7 15,9 14,7 \
+13,13 16,9 7,14 16,17 10,12 7,5 7,10 4,18 7,20 15,1 15,0 14,8 16,1 11,13 5,13 15,7 11,10 7,12 14,10 8,12 14,18 11,11 \
+2,17 14,12 14,20 9,16 3,15 4,16 14,4 10,3 15,5 15,3 13,9 10,0 16,10 5,15 7,22 12,6 14,14 7,9 14,22 16,22 12,7 7,24 13,6 \
+4,17 7,17 13,12 13,8 13,4 3,14 10,8 9,14 8,14 15,14 15,13 7,16 16,14 15,15 7,13 1,15 10,13 16,11 15,6 16,15 16,12 7,18 \
+13,11 7,23 16,16 15,10 8,13 16,20 14,24 16,27 16,21 16,23 16,18 10,2 4,19 11,14 7,19 4,20 10,15 5,16 16,25 14,23 16,28 \
+16,26 )`
+
+
+
 
 > Written with [StackEdit](https://stackedit.io/).
 
